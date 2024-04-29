@@ -1,16 +1,32 @@
-import { format, getMonth, getDate, getYear } from "date-fns";
 import { ICategory, IExpensesCategory, IMenuList, IRecord } from "../interfaces/interfacesIndex";
 import { takeDate } from "./getter";
 
 export const MONTHS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
 export const CONFIG_SETTINGS_LIST: IMenuList[] = [
-  { id: 'set01', name: 'Registrar Egreso', icon: 'arrow-up-outline', screen: 'AddRecordScreen' },
+  { id: 'set01', name: 'Registrar gasto', icon: 'card-outline', screen: 'AddRecordScreen' },
   { id: 'set02', name: 'Categorías', icon: 'list-outline', screen: 'AddCategoryScreen' },
-  { id: 'set04', name: 'Configuraciones', icon: 'cog-outline', screen: 'SettingsScreen' },
-  { id: 'set05', name: 'Gastos anuales', icon: 'bar-chart-outline', screen: 'GraphicScreen' }
-  // { id: 'set06', name: 'Respaldos', icon: 'server-outline', screen: 'GraphicScreen' }
+  { id: 'set04', name: 'Configuraciones', icon: 'settings-outline', screen: 'SettingsScreen' },
+  { id: 'set05', name: 'Gastos por año', icon: 'stats-chart-outline', screen: 'GraphicScreen' },
+  { id: 'set06', name: 'Consultas', icon: 'search-outline', screen: 'FindScreen' },
+  { id: 'set07', name: 'Inficadores financieros', icon: 'bar-chart-sharp', screen: 'DetailExpenseScreen' }
 ]
+
+const hexCharacters = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F"]
+
+const getCharacter = (index: any) => {
+  return hexCharacters[index]
+}
+
+export const generateJustOneColor = (): string => {
+  let hexColorRep = "#"
+
+  for (let index = 0; index < 6; index++) {
+    const randomPosition = Math.floor(Math.random() * hexCharacters.length)
+    hexColorRep += getCharacter(randomPosition)
+  }
+  return hexColorRep
+}
 
 export const getTotalBy = (records: IRecord[]): number => {
   const sum = records.reduce((sum: any, { amount }: any) => {
@@ -35,24 +51,23 @@ export const getSumTotalCategories = (categories: ICategory[], records: IRecord[
       // icon: category.icon,
       total: doSum(category.key, records)
     }
-  }).filter(category => category.total > 0);
+  }).filter(cat => cat.total > 0);
 }
 
-export const convertDate = (date: string) => {
-  const mm = getMonth(new Date(date));
-  const dd = getDate(new Date(date));
-  const yyyy = getYear(new Date(date));
 
-  const today = format(new Date(), 'MM/dd/yyyy');
-  const { yyyy: _yyyy, mm: _mm, dd: _dd } = takeDate();
+export const convertDate = (date: any) => {
+  const myDate = new Date(date).toLocaleDateString()
+  const today = new Date().toLocaleDateString()
 
-  if (date === today) { return 'Hoy'; }
+  if (myDate === today) return 'Hoy'
+
+  const { mm, dd, yyyy } = takeDate(date)
+  const { mm: _mm, dd: _dd, yyyy: _yyyy } = takeDate(new Date().toString())
 
   if ((yyyy === _yyyy) && (mm === _mm)) {
     if (_dd === (dd + 1)) { return 'Ayer'; }
   }
 
-  return `${dd} ${MONTHS[mm].substring(0,3)}, ${yyyy}`
-}
+  return `${dd} ${MONTHS[mm].substring(0, 3)}, ${yyyy}`
 
-// https://stackoverflow.com/questions/75674398/how-can-i-get-the-days-of-the-week-from-date-fns
+}

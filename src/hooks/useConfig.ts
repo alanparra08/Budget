@@ -8,9 +8,9 @@ export const useConfig = () => {
 
     const getSettings = async () => {
         try {
-            const response = await AsyncStorage.getItem('@settings_budget');
-            if (response !== null) {
-                fnSetSettings(JSON.parse(response));
+            const settings = await AsyncStorage.getItem('@settings_budget');
+            if (settings !== null) {
+                fnSetSettings(JSON.parse(settings));
             }
         } catch (e) {
             // ...
@@ -21,7 +21,6 @@ export const useConfig = () => {
         try {
             await AsyncStorage.setItem('@settings_budget', JSON.stringify(settings));
             fnSetSettings(settings)
-
         } catch (e) {
             // ...
         }

@@ -5,16 +5,18 @@ export interface IMenuList {
     screen: string;
 }
 
+export interface ISettings {
+    user: string | null;
+    budget: number | null;
+    displayBy: string | null;
+    theme: string | null;
+    language: string | null;
+}
+
 export interface ICategory {
     key: string;
     value: string;
     // icon: string;
-}
-
-export interface ISettings {
-    user: string;
-    perMonth: boolean;
-    limitAmount: number | null;
 }
 
 export interface IExpensesCategory extends ICategory {

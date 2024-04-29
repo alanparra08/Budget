@@ -10,9 +10,11 @@ interface SettingsContextProps {
 export const SettingsContext = createContext({} as SettingsContextProps);
 
 const initSettings: ISettings = {
-    user: '',
-    perMonth: false,
-    limitAmount: null
+    user: null,
+    displayBy: null,
+    theme: null,
+    language: null,
+    budget: null
 }
 
 export const SettingsProvider = ({children}: any) => {
@@ -20,7 +22,7 @@ export const SettingsProvider = ({children}: any) => {
     const [state, dispatch] = useReducer(SettingsReducer, initSettings);
 
     const fnSetSettings = (settings: ISettings): void => {
-        dispatch({type: 'Set', payload: settings});
+        dispatch({type: 'Save', payload: settings});
     }
 
     return (

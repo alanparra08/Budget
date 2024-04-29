@@ -1,46 +1,43 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { color } from '../theme/color';
+import { View, StyleSheet } from 'react-native'
+import { color } from "../theme/appStyle"
+import { AP_IconButton } from './AP_Buttons';
 
 interface SwipeProps {
-    onEdit:() => void;
-    onDelete:() => void;
+    onEdit: () => void;
+    onDelete: () => void;
 }
 
-const SwipeOptions = ({onEdit, onDelete}: SwipeProps) => (
-    <View style={{flex: 1 }}>
-        <TouchableOpacity style={[css.buttons, css.btnLeft]} activeOpacity={0.7} onPress={onEdit}>
-            <Text style={css.btnText}>Editar</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={[css.buttons, css.btnRight]} activeOpacity={0.7} onPress={onDelete}>
-            <Text style={css.btnText}>Eliminar</Text>
-        </TouchableOpacity>
+const SwipeOptions = ({ onEdit, onDelete }: SwipeProps) => (
+    <View style={{ flex: 1 }}>
+        <View style={[css.buttons, css.btnLeft]}>
+            <AP_IconButton icon='pencil-outline' size={30} iconColor={color.primary} event={onEdit} />
+        </View>
+        <View style={[css.buttons, css.btnRight]}>
+            <AP_IconButton icon='trash-outline' size={30} iconColor={color.dangerLight} event={onDelete} />
+        </View>
     </View>
-  )
+)
 
 const css = StyleSheet.create({
     buttons: {
         position: 'absolute',
-        height: '90%',
-        // height: '100%',
+        height: '80%',
         justifyContent: 'center',
-        alignItems: 'center',
         borderRadius: 4,
-        paddingHorizontal: 10
+        marginTop: 4,
+        // paddingHorizontal: 10
     },
     btnLeft: {
-        // right: 78,
-        right: 83,
-        backgroundColor: color.primary,
+        // right: 83,
+        // backgroundColor: color.primary,
+        right: 43,
+        backgroundColor: 'white',
     },
     btnRight: {
         right: 5,
-        backgroundColor: color.danger,
-    },
-    btnText: {
-        fontSize: 15,
-        color: '#fff'
+        // backgroundColor: color.danger,
+        backgroundColor: "white",
     }
 })
 

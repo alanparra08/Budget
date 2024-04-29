@@ -1,48 +1,44 @@
 import React from 'react'
-import { View, Modal, Dimensions } from 'react-native'
-import { color } from '../theme/color';
+import { View, Text, Modal, Dimensions } from 'react-native'
+import { cardStyle } from "../theme/appStyle"
 
 const { width, height } = Dimensions.get('screen');
 
 interface ModalProps {
-    children: any;
+    children: JSX.Element;
     orientation?: 'center' | 'right' | 'bottom';
     modalVisible: boolean;
 }
 
-const AP_Modal = ({ children, orientation, modalVisible }: ModalProps) => {
+const AP_Modal = ({ children, orientation = 'center', modalVisible }: ModalProps) => {
     let styles = {};
     switch (orientation) {
         case 'center':
             styles = {
                 flex: 1,
-                justifyContent: 'center'
+                justifyContent: 'center',
+                alignItems: 'center'
             }
             break;
         case 'right':
             styles = {
                 position: 'absolute',
-                top: 0,
-                right: 0,
-                width: width * 0.65,
-                height,
-                padding: 20,
-                backgroundColor: 'white'
+                top: -15,
+                right: -10,
+                width: width * 0.70,
+                height: height * .91,
+                ...cardStyle.white,
+                padding: 0
             }
             break;
         case 'bottom':
             styles = {
                 position: 'absolute',
-                bottom: 0,
-                width,
-                maxHeight: 420,
-                paddingHorizontal: 10,
-                paddingVertical: 25,
-                borderBottomWidth: 1,
-                borderTopLeftRadius: 20,
-                borderTopRightRadius: 20,
-                borderColor: color.border,
-                backgroundColor: 'white'
+                bottom: 10,
+                width: width * .95,
+                ...cardStyle.white,
+                paddingHorizontal: 25,
+                borderRadius: 10
             }
             break;
         default:
@@ -51,8 +47,8 @@ const AP_Modal = ({ children, orientation, modalVisible }: ModalProps) => {
 
     return (
         <Modal transparent visible={modalVisible} animationType='fade' >
-            <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' }} >
-                <View {...styles} >
+            <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.6)' }} >
+                <View {...styles}>
                     {children}
                 </View>
             </View>

@@ -1,49 +1,23 @@
 import { useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ICategory, IRecord } from '../interfaces/interfacesIndex';
+import { IRecord } from '../interfaces/interfacesIndex';
 import { BudgetContext } from '../context/BudgetContext';
 
 export const useProvider = () => {
     const {
-        state: {
-            expenses,
-            categories
-        },
-        fnSetCategories,
-        fnSetOneCategory,
+        state: { expenses, },
         fnSetAllExpenses,
         fnSetOneExpense
     } = useContext(BudgetContext);
 
-    const getCategories = async (): Promise<void> => {
-        try {
-            const _categories = await AsyncStorage.getItem('@categories');
-            if (_categories !== null) {
-                fnSetCategories(JSON.parse(_categories));
-            }
-        } catch (e) {
-            // error reading value
-        }
-    }
-
-    const saveCategory = async (newCategory: ICategory): Promise<void> => {
-        try {
-            const allCategories = [newCategory, ...categories]
-            await AsyncStorage.setItem('@categories', JSON.stringify(allCategories));
-            fnSetOneCategory(newCategory);
-        } catch (e) {
-            // error reading value
-        }
-    }
-
     const getExpenses = async (): Promise<void> => {
         try {
-            const _expenses = await AsyncStorage.getItem('@expenses');
-            if (_expenses !== null) {
-                fnSetAllExpenses(JSON.parse(_expenses));
+            const exp = await AsyncStorage.getItem('@expenses')
+            if (exp !== null) {
+                fnSetAllExpenses(JSON.parse(exp))
             }
         } catch (e) {
-            // error reading value
+            console.log('Error al cargar gastos')
         }
     }
 
@@ -53,7 +27,7 @@ export const useProvider = () => {
             await AsyncStorage.setItem('@expenses', JSON.stringify(_expenses));
             fnSetOneExpense(newExpense);
         } catch (e) {
-            // error reading value
+            console.log('Error al registrar gasto')
         }
     }
 
@@ -62,19 +36,20 @@ export const useProvider = () => {
             await AsyncStorage.setItem('@expenses', JSON.stringify(expenses));
             fnSetAllExpenses(expenses);
         } catch (e) {
-            // error reading value
+            console.log('Error al actualizar gastos')
         }
     }
 
     const removeRecords = async (): Promise<void> => {
         try {
-            await AsyncStorage.removeItem('@expenses');
+            const result = await AsyncStorage.removeItem('@expenses');
+            console.log('records eliminados', result)
         } catch (e) {
             // error reading value
         }
     }
 
-      const removeCategories = async (): Promise<void> => {
+    const removeCategories = async (): Promise<void> => {
         try {
             await AsyncStorage.removeItem('@categories');
             console.log('borrados')
@@ -84,8 +59,6 @@ export const useProvider = () => {
     }
 
     return {
-        getCategories,
-        saveCategory,
         getExpenses,
         saveExpense,
         refreshExpenses

@@ -1,41 +1,30 @@
-import { TouchableOpacity, Text, StyleSheet } from "react-native"
+import { View, TouchableOpacity, Text } from "react-native"
 import Icon from "react-native-vector-icons/Ionicons"
-import { color } from "../theme/color";
+import { color } from "../theme/appStyle"
+import { IIconButtonProps, IOpenButton } from "../interfaces/IButtons";
 
-interface PropsIconButton {
-    iconName: string;
-    size?: number;
-    color?: string;
-    event?: () => void;
-}
-export const AP_IconButton = (props: PropsIconButton) => {
-    const { iconName, size = 25, color = 'black', event } = props;
+export const AP_IconButton = ({ icon, size = 25, iconColor = color.black, disabled = false, event }: IIconButtonProps): JSX.Element => (
+    <TouchableOpacity activeOpacity={0.5} onPress={event} disabled={disabled}>
+        <Icon name={icon} size={size} color={iconColor} />
+    </TouchableOpacity>
+)
 
-    return (
-        <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={event}
-        >
-            <Icon name={iconName} size={size} style={{ color: color }} />
-        </TouchableOpacity>
-    )
-}
+export const AP_CircleButton = ({ icon, color = '#6bb57f', size = 65, event }: IOpenButton) => (
+    <View style={{ position: 'absolute', right: 25, bottom: 8 }}>
+        <AP_IconButton icon={icon} iconColor={color} size={size} event={event} />
+    </View>
+)
 
-interface LinkButtonProps {
-    buttonText: string;
-    textSize?: number;
+export interface LinkButtonProps {
+    label: string;
+    fontSize?: number;
+    mt?: number;
+    orientation?: 'center' | 'right';
     event: () => void;
-    iconName?: string;
-    iconSize?: number;
-    iconColor?: string;
 }
-export const AP_LinkButton = (props: LinkButtonProps) => {
-    const { buttonText, textSize = 16, event, iconName, iconSize = 25, iconColor } = props;
 
-    return (
-        <TouchableOpacity activeOpacity={0.5} style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ marginRight: 10, fontSize: textSize, color: color.primary }}>{buttonText}</Text>
-            {iconName && <Icon name="cog-outline" size={iconSize} style={{ color: color.primary }} />}
-        </TouchableOpacity>
-    )
-};
+export const AP_LinkButton = ({ label, fontSize = 16, mt = 0, orientation, event }: LinkButtonProps): JSX.Element => (
+    <TouchableOpacity activeOpacity={0.5} onPress={event} style={{ marginTop: mt }}>
+        <Text style={{ fontSize, color: color.primary, textAlign: orientation }}>{label}</Text>
+    </TouchableOpacity>
+)

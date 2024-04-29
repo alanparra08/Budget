@@ -10,4 +10,4 @@ export type BudgetActions =
     { type: 'SetTotalExpensesFiltered', payload: number | null }
 
 export type SettingActions =
-    { type: 'Set', payload: ISettings }
+    { type: 'Save', payload: ISettings }

@@ -1,14 +1,20 @@
 export const color = {
-    green: "#6bb57f",
+    green: "#7cbe8e",
+    greenLight: "#d8ebdd",
+    greenBorde: "#95c8a2",
+    white: '#fff',
+    grayLight: '#F3F4F5',
     primary: '#70a9ca',
     blueLight: '#edf5fc',
     secondary: '#6c757d',
     border: '#BDC3C7',
     danger: '#F66860',
-    orangeLight: '#f77f78',
+    dangerLight: '#f77f78',
     black: '#37393B',
     inputBorder: 'grey',
     inputText: '#4d4d4d',
-    btnSecondary: '#37393B', // se va
     disabled: '#E7E9EA',
+    error: "#721c24",
+    skin: '#e6ece6',
+    whitesmoke: "#f2f2f2"
 }

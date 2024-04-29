@@ -1,41 +1,44 @@
-import { StyleSheet } from 'react-native'
-import { color } from '../theme/color'
+import { StyleSheet } from "react-native"
+import { color } from "../theme/appStyle"
 
 interface Props {
     bgPrimaryLight?: boolean;
     bgSecondaryLight?: boolean;
-    squares?: boolean;
-    row?: boolean;
 }
 
 export const useButtons = (props: Props) => {
-    const { bgPrimaryLight, bgSecondaryLight, squares, row } = props
+    const { bgPrimaryLight, bgSecondaryLight } = props
+
+    const displayFlex = {
+        flexDirection: "column",
+        justifyContent: "center"
+    }
 
     const primaryButton = {
         ...css.button,
-        width: row ? 165 : '100%',
-        borderRadius: squares ? 4 : 20,
-        backgroundColor: bgPrimaryLight ? 'white' : color.primary
+        backgroundColor: bgPrimaryLight ? "white" : color.green
     }
 
     const primaryText = {
         ...css.buttonText,
-        color: bgPrimaryLight ? color.black : 'white'
+        color: bgPrimaryLight ? color.black : "white"
     }
 
     const secondaryButton = {
         ...css.button,
-        width: row ? 165 : '100%',
-        borderRadius: squares ? 4 : 30,
-        backgroundColor: bgSecondaryLight ? 'white' : color.btnSecondary
+        backgroundColor: bgSecondaryLight ? "white" : "#ebecee",
+        // backgroundColor: 'white',
+        // borderWidth: 0.8,
+        // borderColor: color.green
     }
 
     const secondaryText = {
         ...css.buttonText,
-        color: bgSecondaryLight ? color.black : 'white'
+        color: color.black
     }
 
     return {
+        displayFlex,
         primaryButton, primaryText,
         secondaryButton, secondaryText
     }
@@ -48,14 +51,12 @@ const css = StyleSheet.create({
     },
     button: {
         marginTop: 10,
-        padding: 8,
-        borderWidth: 0.5,
-        // borderRadius: 30,
-        borderColor: color.border,
-        elevation: 1
+        padding: 10,
+        borderRadius: 25
     },
     buttonText: {
-        fontSize: 16,
-        textAlign: 'center'
+        fontSize: 17,
+        // fontWeight: '500',
+        textAlign: "center"
     }
 })

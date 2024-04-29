@@ -1,63 +1,70 @@
-import React from 'react'
-import { Text, View, SafeAreaView, TouchableOpacity } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-import { EListType } from '../interfaces/interfacesIndex'
+import React, { useContext, useState } from 'react'
+import { SafeAreaView } from 'react-native'
+import { EDisplay } from '../enums/EDisplay'
+import { ISettings } from '../interfaces/interfacesIndex'
 import { useHome } from '../hooks/useHome'
-import WrapperList from '../components/Records/WrapperList'
+import { useConfig } from '../hooks/useConfig'
+import { SettingsContext } from '../context/SettingCtx/SettingsContext'
 import MenuTop from '../components/Menus/MenuTop'
-import Card from '../components/Card'
+import ExpenseIndicator from '../components/ExpenseIndicator'
 import ErrorMessage from '../components/ErrorMessage'
-import { color } from '../theme/color'
-import CategoryList from '../components/CategoryList'
-import { flex, text } from '../theme/theme'
-import { card } from '../theme/styles'
-import { AP_IconButton, AP_LinkButton } from '../components/AP_Buttons'
-import ScrollCategories from '../components/ScrollCategories'
-import CardWhole from '../components/CardWhole'
+import ExpenseCategoryList from '../components/ExpenseCategoryList'
+import AP_Modal from '../components/AP_Modal'
+import ExpenseList from '../components/ExpenseList'
+import ButtonGroup, { ButtonGroupProps } from '../components/ButtonGroup'
+import { TitleAndLink } from '../components/AP_Titles'
+import Card from '../components/Card'
 
+import DisplayUser from '../components/DisplayUser'
 
 const HomeScreen = () => {
-  const {
-    user,
-    expensesFiltered,
-    totalExpensesFiltered,
-    modalVisible,
-    setModalVisible,
-  } = useHome();
+  const { setSettings } = useConfig()
+  const { state: settingState } = useContext(SettingsContext)
+  const { displayBy, filterCategories, totalExpense, expenseList, onAddExpense } = useHome();
+  const [modal, setModal] = useState<boolean>(false)
 
-  const router = useNavigation<any>()
+  const onChangeDisplay = (display: string): void => {
+    const newSetting: ISettings = {
+      ...settingState,
+      displayBy: display
+    }
+    setSettings(newSetting);
+  }
 
-  const HomeContent = () => (
-    <View>
-      {/* <ScrollCategories /> */}
-      <CategoryList />
-      <WrapperList title='Registro Gasto Quincenal' actionTitle='Nuevo' action={() => router.navigate('AddRecordScreen')} listType={EListType.EXPENSES} />
-    </View>
-  )
+  const filterButtons: ButtonGroupProps[] = [
+    { text: 'Por Día', event: () => onChangeDisplay(EDisplay.DAY), active: displayBy === EDisplay.DAY },
+    { text: 'Por Quincena', event: () => onChangeDisplay(EDisplay.FIFTEEN), active: displayBy === EDisplay.FIFTEEN },
+    { text: 'Por Mes', event: () => onChangeDisplay(EDisplay.MONTH), active: displayBy === EDisplay.MONTH }
+  ]
 
-  const NoRecords = () => (
-    <>
-      <ErrorMessage message='Sin registros esta quincena' />
-      {/* <View style={{ marginTop: 20, marginRight: 5, alignItems: 'flex-end' }}>
-        <AP_LinkButton buttonText='Configuraciones' event={() => alert('avc')} />
-      </View> */}
-    </>
-  )
+  const HomeView = (): JSX.Element => {
+    if (totalExpense === 0) { return (<ErrorMessage message='No se encontró ningun registro' />) }
 
-  const AddExpense = () => (
-    <View style={{ position: 'absolute', right: 20, bottom: 15 }}>
-      <AP_IconButton event={() => router.navigate('AddRecordScreen')} iconName='add-circle' size={60} color={color.green} />
-    </View>
-  )
+    return (
+      <>
+        <ExpenseCategoryList categoryData={filterCategories} />
+        <TitleAndLink label='Últimos gastos' labelLink='Nuevo' event={onAddExpense} />
+        <ExpenseList list={expenseList} edit />
+      </>
+    )
+  }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }} >
       <MenuTop />
-      <Card amount={Number(totalExpensesFiltered)} display='Gasto Quincenal' details='Detalles' />
+      <DisplayUser />
+      <ButtonGroup buttons={filterButtons} />
+      <ExpenseIndicator />
+      <HomeView />
 
-      {!expensesFiltered.length ? <NoRecords /> : <HomeContent />}
-
-      <AddExpense />
+      <AP_Modal
+        children={(
+          <Card closeModal={() => setModal(false)}>
+            <ExpenseList list={expenseList} edit mt={0} />
+          </Card>
+        )}
+        modalVisible={modal}
+      />
     </SafeAreaView>
   )
 };

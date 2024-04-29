@@ -1,122 +1,85 @@
-import React, { useState } from 'react'
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
-import DateTimePicker from '@react-native-community/datetimepicker'
-import { StackScreenProps } from '@react-navigation/stack'
-import Icon from 'react-native-vector-icons/Ionicons'
-import { SelectList } from 'react-native-dropdown-select-list'
-import { RootStackParams } from '../navigator/Navigator'
-import { useExpense } from '../hooks/useExpense'
-import { text, banner } from '../theme/theme'
-import ErrorMessage from '../components/ErrorMessage'
-import CustomAlert from '../components/CustomAlert'
-import ButtonsGroup from '../components/ButtonsGroup'
-import { convertDate } from '../util'
-import { color } from '../theme/color'
-import { MainLayout } from '../layouts/MainLayout'
+import React, { useState } from "react"
+import { View, ScrollView } from "react-native"
+import { StackScreenProps } from "@react-navigation/stack"
+import { RootStackParams } from "../navigator/Navigator"
+import { useExpense } from "../hooks/useExpense"
+import { cardStyle } from "../theme/appStyle"
+import { MainLayout } from "../layouts/MainLayout"
+import ErrorMessage from "../components/ErrorMessage"
+import CustomAlert from "../components/CustomAlert"
+import OptionButtons from "../components/OptionButtons"
+import AP_input from "../components/AP_input"
+import AP_Picker from "../components/AP_Picker"
+import AP_PickerList from "../components/AP_PickerList"
+import AP_RadioButton from "../components/AP_RadioButton"
+import AP_Switch from "../components/AP_Switch"
 
-interface Props extends StackScreenProps<RootStackParams, 'AddRecordScreen'> { };
+interface Props extends StackScreenProps<RootStackParams, "AddRecordScreen"> { };
 
 const AddRecordScreen = ({ navigation, route }: Props): JSX.Element => {
-  const { params: editExpense } = route as any | null
+  const { params: editExpense } = route as any | null;
   const { categories, emptyFields, showAlert, entity, categoryEdit, create } = useExpense(editExpense);
-  const [pickerVisible, setVisiblePicker] = useState<boolean>(false)
-  const [selectedDate, setSelectedDate] = useState<string>(convertDate(new Date().toString()))
+  const [entrie, setEntrie] = useState<boolean>(false)
+  const [isEntry, setIsEntry] = useState<boolean>(true);
 
-  const onChangeDate = (newDate: any) => {
-    const { nativeEvent: { timestamp } } = newDate;
-    setVisiblePicker(false)
-    entity[1]({ ...entity[0], register: timestamp })
+  const onHandleDate = (newDate: any): void => {
+    entity[1]({
+      ...entity[0],
+      register: newDate
+    })
+  }
 
-    setSelectedDate(convertDate(timestamp))
+  const onCloseAlert = () => {
+    showAlert[1](false)
+    navigation.navigate('HomeScreen')
+  }
+
+  const toggleSwitch = () => {
+    setIsEntry(!isEntry);
   }
 
   return (
     <MainLayout title='Registrar gasto'>
-      {emptyFields[0] && <ErrorMessage message='Llenar los campos correctamente' />}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {emptyFields[0] && <ErrorMessage message="Llenar los campos correctamente" eClose={() => emptyFields[1](false)} />}
 
-      <View style={banner.content}>
-        <View style={{ marginBottom: 4 }}>
-          <Text style={text.normal}>Categoría</Text>
-          <SelectList
+        <View style={{ ...cardStyle.white }}>
+          <AP_PickerList label="CATEGORÍA" legend="Seleccionar categoría"
             data={categories}
-            save='key'
-            setSelected={(cat: any) => entity[1]({ ...entity[0], category: cat })}
-            defaultOption={{ key: entity[0].category, value: categoryEdit[0] }}
-            search={false}
-            placeholder='Seleccionar categoría'
-            inputStyles={{ fontSize: 16 }}
-            boxStyles={{ opacity: 0.7, borderWidth: 0.6, borderRadius: 4, borderColor: color.inputBorder, marginVertical: 8 }}
-            dropdownTextStyles={{ fontSize: 16, color: color.inputText }}
-            dropdownStyles={{ marginTop: 0, borderWidth: 0.5, borderRadius: 4, borderColor: color.inputBorder }}
+            value={entity[0].category}
+            event={item => entity[1]({ ...entity[0], category: item })}
+          />
+
+          <AP_input label='DESCRIPCIÓN'
+            valueText={entity[0].description}
+            change={val => entity[1]({ ...entity[0], description: val })}
+          />
+
+          <AP_Switch label="TIPO" options={["INGRESO", "EGRESO"]} />
+          <AP_input label='CANTIDAD'
+            icon='logo-usd'
+            // icon="remove-outline"
+            valueText={entity[0].amount?.toString()}
+            inputType='numeric'
+            change={val => entity[1]({ ...entity[0], amount: val })}
+          />
+
+          <AP_Picker valueDate={entity[0].register} event={(newDate) => onHandleDate(newDate)} />
+
+          <OptionButtons
+            tPrimary={entity[0].id ? 'Editar' : 'Guardar'}
+            ePrimary={create}
+            tSecondary="Cancelar"
+            eSecondary={() => navigation.goBack()}
           />
         </View>
 
-        <View style={{ marginBottom: 4 }}>
-          <Text style={text.normal}>Descripción</Text>
-          <TextInput
-            value={entity[0].description}
-            onChangeText={(val) => entity[1]({ ...entity[0], description: val })}
-            selectionColor='#A6ACAF'
-            style={banner.input}
-          />
-        </View>
-
-        <View style={{ marginBottom: 4 }}>
-          <Text style={text.normal}>Cantidad</Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <TextInput
-              keyboardType="decimal-pad"
-              value={entity[0].amount?.toString()}
-              onChangeText={(val: any) => entity[1]({ ...entity[0], amount: val })}
-              selectionColor='#A6ACAF'
-              style={{ flex: 1, ...banner.input, fontSize: 22, paddingRight: 50, color: color.primary }}
-            />
-            <Icon name='logo-usd' size={28} color={color.border} style={{ position: 'absolute', right: 10, top: 15, color: color.primary }} />
-          </View>
-        </View>
-
-        <View style={{ marginBottom: 4 }}>
-          <Text style={text.normal}>Fecha</Text>
-          <TouchableOpacity activeOpacity={0.7} style={{ flexDirection: 'row', alignItems: 'center' }} onPress={()=> setVisiblePicker(true)}>
-            <TextInput
-              editable={false}
-              value={selectedDate}
-              selectionColor='#A6ACAF'
-              style={{ ...banner.input, flex: 1, paddingRight: 50 }}
-            />
-            <Icon name='calendar-outline' size={28} color={color.border} style={{ position: 'absolute', right: 10, top: 15, color: color.primary }} />
-          </TouchableOpacity>
-        </View>
-
-        <ButtonsGroup
-          tPrimary={entity[0].id ? 'Editar' : 'Guardar'}
-          ePrimary={create}
-          tSecondary="Cancelar"
-          eSecondary={() => navigation.goBack()}
+        <CustomAlert
+          message='Información guardada correctamente'
+          visible={showAlert[0]}
+          hideAlert={onCloseAlert}
         />
-      </View>
-
-      {pickerVisible &&
-        <DateTimePicker
-          // testID='datetimepicker'
-          display='default'
-          timeZoneOffsetInMinutes={0}
-          value={new Date()}
-          mode='date'
-          minimumDate={new Date(2023, 0, 1)}
-          maximumDate={new Date()}
-          onChange={newDate => onChangeDate(newDate)}
-        />
-      }
-
-      <CustomAlert
-        message='Información guardada correctamente'
-        visible={showAlert[0]}
-        hideAlert={() => {
-          showAlert[1](false)
-          navigation.navigate('HomeScreen')
-        }}
-      />
+      </ScrollView>
     </MainLayout>
   )
 };

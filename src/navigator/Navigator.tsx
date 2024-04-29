@@ -1,4 +1,3 @@
-
 import HomeScreen from '../screens/HomeScreen'
 import AddRecordScreen from '../screens/AddRecordScreen'
 import AddCategoryScreen from '../screens/AddCategoryScreen'
@@ -6,9 +5,12 @@ import SettingsScreen from '../screens/SettingsScreen'
 import { ICategory, IRecord } from '../interfaces/interfacesIndex'
 import GraphicScreen from '../screens/GraphicScreen'
 import MonthDetailsScreen from '../screens/MonthDetailsScreen'
+import FindScreen from '../screens/FindScreen'
 
 import { createStackNavigator } from '@react-navigation/stack'
 import ExpenseByCategoryScreen from '../screens/ExpenseByCategoryScreen'
+import DetailExpenseScreen from '../screens/DetailExpenseScreen'
+
 
 export type RootStackParams = {
     HomeScreen: undefined;
@@ -16,8 +18,10 @@ export type RootStackParams = {
     AddCategoryScreen: undefined
     SettingsScreen: undefined
     GraphicScreen: undefined
-    MonthDetailsScreen: {year: number, monthNumber: number}
-    ExpenseByCategoryScreen: {category: ICategory}
+    MonthDetailsScreen: { year: number, monthNumber: number }
+    ExpenseByCategoryScreen: { category: ICategory }
+    FindScreen: undefined
+    DetailExpenseScreen: undefined
 }
 const Stack = createStackNavigator<RootStackParams>()
 
@@ -39,6 +43,8 @@ const Navigator = () => {
             <Stack.Screen name="GraphicScreen" component={GraphicScreen} />
             <Stack.Screen name="MonthDetailsScreen" component={MonthDetailsScreen} />
             <Stack.Screen name="ExpenseByCategoryScreen" component={ExpenseByCategoryScreen} />
+            <Stack.Screen name="FindScreen" component={FindScreen} />
+            <Stack.Screen name="DetailExpenseScreen" component={DetailExpenseScreen} />
         </Stack.Navigator>
     )
 };

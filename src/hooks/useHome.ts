@@ -1,16 +1,24 @@
-import { useState, useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { useNavigation } from "@react-navigation/native"
+import { SettingsContext } from '../context/SettingCtx/SettingsContext'
+import { IExpensesCategory } from '../interfaces/interfacesIndex'
+import { getSumTotalCategories } from '../util'
 import { useProvider } from './useProvider'
 import { useConfig } from './useConfig'
-import { BudgetContext } from '../context/BudgetContext'
-import { SettingsContext } from '../context/SettingCtx/SettingsContext'
+import { useTempData } from './useTempData'
+import { useCategoryService } from './useCategoryService'
 
 export const useHome = () => {
-    const [modalVisible, setModalVisible] = useState<boolean>(false)
-    const { getCategories, getExpenses } = useProvider()
+    const router = useNavigation<any>()
+    const { state: { displayBy } } = useContext(SettingsContext)
+    const { getExpenses } = useProvider()
+    const { getCategories } = useCategoryService()
     const { getSettings } = useConfig()
-    const { state: { expenses, expensesFiltered, totalExpensesFiltered },
-        fnSetCategoriesFiltered, fnSetExpensesFiltered, fnSetTotalExpensesFiltered, } = useContext(BudgetContext)
-    const { state: { user } } = useContext(SettingsContext);
+    const { categoryList, expenseList, titleExpense, totalExpense } = useTempData()
+
+    const [filterCategories, setFilterCategories] = useState<IExpensesCategory[]>([])
+
+    const onAddExpense = () => router.navigate("AddRecordScreen")
 
     useEffect(() => {
         getCategories()
@@ -19,17 +27,17 @@ export const useHome = () => {
     }, [])
 
     useEffect(() => {
-        fnSetCategoriesFiltered(expenses)
-        fnSetExpensesFiltered(expenses)
-        fnSetTotalExpensesFiltered(expenses)
-    }, [expenses])
+        const dataTemp = getSumTotalCategories(categoryList, expenseList)
+        setFilterCategories(dataTemp)
+      }, [expenseList])
 
     return {
-        user,
-        expensesFiltered,
-        totalExpensesFiltered,
-
-        modalVisible,
-        setModalVisible
+        router,
+        displayBy,
+        filterCategories,
+        titleExpense,
+        totalExpense,
+        expenseList,
+        onAddExpense
     }
 }

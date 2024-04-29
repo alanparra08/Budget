@@ -1,7 +1,6 @@
 import React from 'react'
-import { View, Text } from 'react-native'
 import AwesomeAlert from 'react-native-awesome-alerts'
-import { color } from '../theme/color';
+import { color } from '../theme/appStyle';
 
 interface AlertProps {
     message: string;

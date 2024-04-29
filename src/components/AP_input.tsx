@@ -1,57 +1,78 @@
-import React from 'react'
+import React , { useRef } from 'react'
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, KeyboardType } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { banner, flex, text } from '../theme/theme'
-import { color } from '../theme/color'
+import { color, inputStyle } from "../theme/appStyle"
 
 interface Props {
-    display: string;
-    placeholder?: string;
-    valueText: string;
+    label?: string;
+    holder?: string;
+    valueText: any;
     inputType?: KeyboardType;
-    change: (text: string) => void;
+    focus?: boolean;
+    length?: number;
+    icon?: string;
+    change: (text: any) => void;
 }
 
 const AP_input = (props: Props) => {
-    const { display, placeholder, valueText, inputType, change } = props
+    const {
+        label, holder, valueText, inputType = 'default', focus = false, length = 50, icon = '', change
+    } = props
+
+    const textInputRef = useRef<TextInput>(null);
+
+    const clearInput = () => {
+        change('')
+        textInputRef.current?.focus()
+    }
+
+
+    const RemoveIcon = () => {
+        if (valueText) {
+            return (
+                <TouchableOpacity onPress={clearInput} style={{...css.iconStyle, right: 10}} activeOpacity={0.5}>
+                    <Icon name='close-outline' size={25} color={color.inputBorder} />
+                </TouchableOpacity>
+            )
+        }
+    }
+
+    const LeftIcon = (): JSX.Element => <Icon name={icon} style={{...css.iconStyle, left: 10}} size={25} color={color.primary} />
 
     return (
-        <>
-            <Text style={text.normal}>{display}</Text>
-            <View style={flex.row}>
+        <View style={{ marginTop: 15 }}>
+            <Text style={{ fontSize: 16 }}>{label}</Text>
+            <View>
+                {icon && <LeftIcon />}
                 <TextInput
-                    style={css.input}
+                    autoFocus={focus}
+                    ref={textInputRef}
+                    style={{
+                        ...css.input,
+                        paddingLeft: icon ? 45 : 15
+                    }}
+                    maxLength={length}
+                    selectionColor={color.inputText}
                     value={valueText}
                     onChangeText={val => change(val)}
                     keyboardType={inputType}
-                    placeholder={placeholder}
+                    placeholder={holder}
                 />
-                {
-                    valueText && (
-                        <TouchableOpacity onPress={()=> change('')} style={css.btnRemove} activeOpacity={0.5}>
-                            <Icon name='close-outline' size={30} style={css.icon} />
-                        </TouchableOpacity>
-                    )
-                }
-
+                <RemoveIcon />
             </View>
-        </>
+        </View>
     )
 }
 
 const css = StyleSheet.create({
-    input: {
-        ...banner.input,
-        flex: 1,
-        paddingRight: 40
-    },
-    btnRemove: {
+    iconStyle: {
         position: 'absolute',
-        top: 15,
-        right: 10
+        top: 22,
+        color: color.primary
     },
-    icon: {
-        color: color.btnSecondary
+    input: {
+        ...inputStyle.input,
+        paddingRight: 45
     }
 })
 

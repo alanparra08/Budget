@@ -1,33 +1,32 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import Icon from 'react-native-vector-icons/Ionicons'
+import { View, ScrollView, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useConfig } from '../hooks/useConfig'
 import { SettingsContext } from '../context/SettingCtx/SettingsContext'
 import { ISettings } from '../interfaces/interfacesIndex'
-import { banner, flex, text } from '../theme/theme'
-import { color } from '../theme/color'
+import { cardStyle } from '../theme/cardStyle'
 import { MainLayout } from '../layouts/MainLayout'
-import CustomInputText from '../components/CustomInputText'
 import CustomAlert from '../components/CustomAlert'
-import ButtonsGroup from '../components/ButtonsGroup'
-
-
+import OptionButtons from '../components/OptionButtons'
+import AP_RadioButton from '../components/AP_RadioButton'
+import AP_input from '../components/AP_input'
 
 const SettingsScreen = (props: any) => {
     const router = useNavigation<any>()
-    const { state: { user, perMonth, limitAmount } } = useContext(SettingsContext)
+    const { state } = useContext(SettingsContext)
     const { setSettings } = useConfig()
 
     const [alertVisible, setAlertVisible] = useState<boolean>(false)
-    const [isPerMonth, setIsPerMonth] = useState<boolean>(perMonth)
-    const [data, setData] = useState({ user: '', perMonth, limitAmount: null, currentTheme: 'default' })
+    const [data, setData] = useState<ISettings>({ user: null, budget: null, displayBy: null, theme: null, language: null })
 
     const saveSettings = (): void => {
         const settings: ISettings = {
-            user: data.user.trim(),
-            perMonth: isPerMonth,
-            limitAmount: null
+            user: data.user,
+            budget: data.budget,
+            displayBy: data.displayBy,
+            theme: data.theme,
+            language: data.language,
+
         }
         setSettings(settings);
         setAlertVisible(true);
@@ -41,75 +40,54 @@ const SettingsScreen = (props: any) => {
     }
 
     useEffect(() => {
-        setData({ ...data, user, limitAmount: null })
+        setData({
+            user: state.user,
+            displayBy: state.displayBy,
+            theme: state.theme,
+            language: state.language,
+            budget: state.budget
+        })
     }, [])
-
-    const Opciones = () => (
-        <View>
-            <Text style={{ ...text.normal, marginTop: 10, marginBottom: 10 }}>Mostrar Egresos</Text>
-            <View style={{ ...flex.row, marginBottom: 5 }}>
-                <TouchableOpacity activeOpacity={0.5} style={{ ...css.radioButton,  marginRight: 15 }} onPress={() => setIsPerMonth(false)}>
-                    <Icon
-                        name={!isPerMonth ? "checkmark-circle-outline" : "radio-button-off-outline"}
-                        size={28} color={color.btnSecondary}
-                    />
-                    <Text style={{...text.normal, marginLeft: 5, color: color.btnSecondary }} >Por Quincena</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} style={css.radioButton} onPress={() => setIsPerMonth(true)}>
-                    <Icon
-                        name={isPerMonth ? "checkmark-circle-outline" : "radio-button-off-outline"}
-                        size={28} color={color.btnSecondary}
-                    />
-                    <Text style={{...text.normal,  marginLeft: 5, color: color.btnSecondary }}>Por Mes</Text>
-                </TouchableOpacity>
-
-            </View>
-        </View>
-    )
 
     return (
         <MainLayout title='Configuraciones'>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={{ ...banner.content }}>
-                    <CustomInputText
-                        display='Usuario'
-                        inputValue={user}
-                        maxLength={25}
-                        changeText={(value) => handleData('user', value)}
+                <View style={{ ...cardStyle.white, paddingTop: 12 }}>
+                    <AP_input
+                        focus
+                        label='Mi usuario'
+                        valueText={data.user}
+                        change={value => handleData('user', value)}
                     />
+                    <AP_input
+                        label='Presupuesto Mes'
+                        valueText={data.budget}
+                        length={6}
+                        change={value => handleData('budget', value)}
+                        inputType='numeric'
+                    />
+                </View>
 
-                    <Opciones />
-                    <ButtonsGroup
+                <View style={cardStyle.white}>
+                    <Text style={{ fontSize: 16, marginBottom: 10 }}>Temas</Text>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                        <AP_RadioButton short event={() => handleData('theme', 'dark')} label='Obscuro' active={data.theme === 'dark' ?? true} />
+                        <AP_RadioButton short event={() => handleData('theme', 'white')} label='Claro' active={data.theme === 'white' ?? true} />
+                    </View>
+
+                    <Text style={{ fontSize: 16, marginTop: 15, marginBottom: 10 }}>Idiomas</Text>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                        <AP_RadioButton short event={() => handleData('language', 'esp')} label='Espanol' active={data.language === 'esp' ?? true} />
+                        <AP_RadioButton short event={() => handleData('language', 'eng')} label='Ingles' active={data.language === 'eng' ?? true} />
+                    </View>
+
+                    <OptionButtons
                         tPrimary='Guardar'
                         ePrimary={saveSettings}
                         tSecondary='Cancelar'
                         eSecondary={() => router.navigate('HomeScreen')}
                     />
                 </View>
-
-                {/* <View style={{ ...banner.content, paddingTop: 5 }}>
-                    <ButtonsGroup
-                        title="Temas"
-                        tPrimary='Claro'
-                        ePrimary={() => alert('aa')}
-                        tSecondary='Obscuro'
-                        eSecondary={() => alert('aa')}
-                        bgPrimaryLight
-                        bgSecondaryLight
-                    />
-                </View>
-
-                <View style={{ ...banner.content, paddingTop: 5, marginBottom: 10 }}>
-                    <ButtonsGroup
-                        title="Idiomas"
-                        tPrimary='Ingles'
-                        ePrimary={() => alert('aa')}
-                        tSecondary='Español'
-                        eSecondary={() => alert('aa')}
-                        bgPrimaryLight
-                        bgSecondaryLight
-                    />
-                </View> */}
 
                 <CustomAlert
                     message='configuración guardada'
@@ -123,12 +101,5 @@ const SettingsScreen = (props: any) => {
         </MainLayout>
     )
 }
-
-const css = StyleSheet.create({
-    radioButton: {
-        flexDirection: 'row',
-        alignItems: 'center'
-    }
-})
 
 export default SettingsScreen;
