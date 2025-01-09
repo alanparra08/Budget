@@ -9,7 +9,7 @@ import { MainLayout } from "../layouts/MainLayout"
 import AP_Modal from "../components/AP_Modal"
 import ErrorMessage from "../components/ErrorMessage"
 import OptionButtons from "../components/OptionButtons"
-import AP_input from "../components/AP_input"
+import AP_Input from "../components/AP_Input"
 import { AP_IconButton, AP_CircleButton, AP_LinkButton } from "../components/AP_Buttons"
 
 const AddCategoryScreen = (): JSX.Element => {
@@ -94,7 +94,7 @@ const AddCategoryScreen = (): JSX.Element => {
                     <ErrorView />
                 </View>
                 <View>
-                    <AP_input
+                    <AP_Input
                         label="Nombre categoría"
                         valueText={categoryName}
                         change={(value) => onChange("categoryName", value)}
@@ -115,9 +115,8 @@ const AddCategoryScreen = (): JSX.Element => {
         return (
             <View style={css.item}>
                 <Text style={{ fontSize: 16 }}>{item.value}</Text>
-                <View style={flexStyle.row_between}>
+                <View style={{...flexStyle.row_between, columnGap: 10}}>
                     <AP_IconButton icon='pencil-outline' iconColor={color.primary} event={() => onFillForm(item)} />
-                    <View style={{ marginLeft: 10 }} />
                     <AP_IconButton icon='trash-outline' iconColor={color.dangerLight} event={() => onConfirmRemove(item.key)} />
                 </View>
             </View>
@@ -164,7 +163,7 @@ const AddCategoryScreen = (): JSX.Element => {
             {categories.length > 0 &&
                 <>
                     <FlatList
-                        style={{ marginTop: 15, marginBottom: 70 }}
+                        style={{ marginTop: 15, marginBottom: 65 }}
                         data={categories}
                         keyExtractor={(item) => item.key}
                         showsVerticalScrollIndicator={false}

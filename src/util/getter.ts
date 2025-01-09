@@ -1,5 +1,5 @@
 import { format } from "date-fns"
-import { ICategory, IRecord } from "../interfaces/interfacesIndex"
+import { IRecord } from "../interfaces/interfacesIndex"
 
 export const takeYear = (date: string): number => Number(format(new Date(date), 'MM/dd/yyyy').substring(6, 10))
 export const takeMonth = (date: string): number => Number(format(new Date(date), 'MM/dd/yyyy').substring(0, 2))

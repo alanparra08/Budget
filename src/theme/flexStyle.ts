@@ -10,9 +10,18 @@ export const flexStyle = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center"
     },
+    row_arown: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+    },
     row_center: {
         flexDirection: "row",
         justifyContent: "center"
+    },
+    row_center_baseline: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems:'center'
     },
     row_left: {
         flexDirection: "row",

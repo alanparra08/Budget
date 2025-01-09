@@ -13,13 +13,17 @@ const AP_Switch = (props: Props) => {
     const containerStyle = {
         ...css.container,
         borderColor: isCheck ? "#a8cbdf" : "#f5c6cb",
-        backgroundColor: isCheck ? "#e0ecf3" : "#fcedee"
+        // backgroundColor: isCheck ? "#e0ecf3" : "#fcedee"
+
+        // borderColor: color.inputBorder
     }
 
     const switchTextStyle = {
         fontSize: 17,
         marginVertical: 10,
         color: isCheck ? color.primary : "#ea8087"
+
+        //color: color.inputText
     }
 
     return (
@@ -50,7 +54,8 @@ const AP_Switch = (props: Props) => {
 const css = StyleSheet.create({
     container: {
         ...flexStyle.row_between,
-        borderWidth: 0.4,
+        // borderWidth: 0.4,
+        borderWidth: 0.9,
         paddingVertical: 3,
         paddingHorizontal: 15,
         borderRadius: 4

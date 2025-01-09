@@ -25,17 +25,17 @@ export const useTempData = () => {
             case EDisplay.DAY:
                 tempExpenses = myExpenses.getBy.day(mm, dd, yyyy, expenses)
                 setExpenseList(tempExpenses)
-                setTitleExpense("Gasto hoy")
+                setTitleExpense("Diario")
                 break
             case EDisplay.FIFTEEN:
                 tempExpenses = myExpenses.getBy.fifteen(expenses)
                 setExpenseList(tempExpenses)
-                setTitleExpense("Gasto Quincenal")
+                setTitleExpense("Quincenal")
                 break
             case EDisplay.MONTH:
                 tempExpenses = myExpenses.getBy.month(mm, yyyy, expenses)
                 setExpenseList(tempExpenses)
-                setTitleExpense("Gasto Mensual")
+                setTitleExpense("Mensual")
                 break
             default:
                 setExpenseList([])

@@ -19,7 +19,7 @@ const MonthDetailsScreen = ({ route }: Props): JSX.Element => {
     useEffect(() => {
         setMonth(`Gasto ${MONTHS[monthNumber]}, ${year}`);
         setExpensesByMonth(myExpenses.getBy.month(monthNumber, year, expenses))
-    }, [])
+    }, [expenses])
 
     return (
         <MainLayout title={month} returnPage="GraphicScreen">

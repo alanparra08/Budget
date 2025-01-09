@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { View, ScrollView } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { RootStackParams } from "../navigator/Navigator"
@@ -8,7 +8,7 @@ import { MainLayout } from "../layouts/MainLayout"
 import ErrorMessage from "../components/ErrorMessage"
 import CustomAlert from "../components/CustomAlert"
 import OptionButtons from "../components/OptionButtons"
-import AP_input from "../components/AP_input"
+import AP_Input from "../components/AP_Input"
 import AP_Picker from "../components/AP_Picker"
 import AP_PickerList from "../components/AP_PickerList"
 import AP_RadioButton from "../components/AP_RadioButton"
@@ -22,21 +22,21 @@ const AddRecordScreen = ({ navigation, route }: Props): JSX.Element => {
   const [entrie, setEntrie] = useState<boolean>(false)
   const [isEntry, setIsEntry] = useState<boolean>(true);
 
-  const onHandleDate = (newDate: any): void => {
+  const handleDate = (newDate: any): void => {
     entity[1]({
       ...entity[0],
       register: newDate
     })
   }
 
-  const onCloseAlert = () => {
+  const handleAlert = () => {
     showAlert[1](false)
-    navigation.navigate('HomeScreen')
+    navigation.goBack()
+    // navigation.navigate('HomeScreen')
   }
 
-  const toggleSwitch = () => {
-    setIsEntry(!isEntry);
-  }
+  const toggleSwitch = () => setIsEntry(!isEntry);
+
 
   return (
     <MainLayout title='Registrar gasto'>
@@ -50,21 +50,21 @@ const AddRecordScreen = ({ navigation, route }: Props): JSX.Element => {
             event={item => entity[1]({ ...entity[0], category: item })}
           />
 
-          <AP_input label='DESCRIPCIÓN'
+          <AP_Input label='DESCRIPCIÓN'
             valueText={entity[0].description}
             change={val => entity[1]({ ...entity[0], description: val })}
           />
 
           <AP_Switch label="TIPO" options={["INGRESO", "EGRESO"]} />
-          <AP_input label='CANTIDAD'
+          <AP_Input label='CANTIDAD'
             icon='logo-usd'
-            // icon="remove-outline"
             valueText={entity[0].amount?.toString()}
             inputType='numeric'
             change={val => entity[1]({ ...entity[0], amount: val })}
           />
 
-          <AP_Picker valueDate={entity[0].register} event={(newDate) => onHandleDate(newDate)} />
+          <AP_Picker valueDate={entity[0].register} event={(newDate) => handleDate(newDate)} />
+          {/* <AP_Picker valueDate={entity[0].register} event={(newDate) => handleDate(newDate)} /> */}
 
           <OptionButtons
             tPrimary={entity[0].id ? 'Editar' : 'Guardar'}
@@ -77,7 +77,7 @@ const AddRecordScreen = ({ navigation, route }: Props): JSX.Element => {
         <CustomAlert
           message='Información guardada correctamente'
           visible={showAlert[0]}
-          hideAlert={onCloseAlert}
+          hideAlert={handleAlert}
         />
       </ScrollView>
     </MainLayout>

@@ -3,9 +3,6 @@ import { View, SafeAreaView, FlatList } from "react-native"
 import { ScrollView } from "react-native-virtualized-view"
 import { IRecord } from "../interfaces/interfacesIndex"
 import { color, flexStyle, cardStyle } from "../theme/appStyle"
-// * Hooks
-
-// * Components
 import ExpenseListItem from "./ExpenseListItem"
 import ItemSeparator from "./ItemSeparator"
 import { AP_IconButton } from "./AP_Buttons"
@@ -32,7 +29,7 @@ const ExpenseList = (props: Props): JSX.Element => {
   useEffect(() => {
     const maxPage = list?.length / perPage
     setMaxPages(Math.ceil(maxPage))
-  }, [list, perPage])
+  }, [list, perPage, limit])
 
   useEffect(() => {
     setDisabledPrev(currentPage === 1)
@@ -57,7 +54,8 @@ const ExpenseList = (props: Props): JSX.Element => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <FlatList
           data={list?.slice(0, limit ? limit : list.length)}
-          style={[!edit ? { ...cardStyle.list } : {}]}
+          //style={!edit && cardStyle.list}
+          style={ !edit && {...cardStyle.list, marginTop: 0} }
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => <ExpenseListItem item={item} edit={edit} />}
           ItemSeparatorComponent={() => !edit && <ItemSeparator />}

@@ -5,7 +5,9 @@ import { useNavigation } from "@react-navigation/native"
 import { ICategory, IExpensesCategory } from "../interfaces/interfacesIndex"
 import { color, cardStyle, textStyle } from "../theme/appStyle"
 
-interface Props { categoryData: IExpensesCategory[] }
+interface Props {
+    categoryData: IExpensesCategory[]
+}
 
 const ExpenseCategoryList = ({ categoryData }: Props) => {
     const router = useNavigation<any>()
@@ -66,7 +68,7 @@ const ExpenseCategoryList = ({ categoryData }: Props) => {
 
     return (
         <SafeAreaView style={{ marginTop: 20 }}>
-            <Text style={css.title}>Categorías esta quincena</Text>
+            {/* <Text style={css.title}>{title}</Text> */}
             <FlatList
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -84,7 +86,7 @@ const css = StyleSheet.create({
         ...cardStyle.round,
         marginTop: 5,
         marginBottom: 1,
-        marginHorizontal: 3
+        marginHorizontal: 3,
     },
     title: {
         ...textStyle.title,

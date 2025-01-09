@@ -5,13 +5,14 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import { convertDate } from "../util"
 import { color, inputStyle } from "../theme/appStyle"
 
-interface Props {
-    valueDate: string;
+interface PickerProps {
+    valueDate?: string;
     event: (fecha: any) => void;
 }
 
-const AP_Picker = (props: Props): JSX.Element => {
-    const { valueDate, event } = props
+const AP_Picker = ({ valueDate, event }: PickerProps): JSX.Element => {
+
+    // const { valueDate, event } = props
     const [visible, setVisible] = useState<boolean>(false)
     const [dtPicker, setDTPicker] = useState<string>()
 
@@ -27,24 +28,26 @@ const AP_Picker = (props: Props): JSX.Element => {
         } else {
             setDTPicker(convertDate(valueDate))
         }
-    }, [])
+    }, [valueDate])
 
     return (
-        <View style={{ marginTop: 15 }}>
-            <Text style={{ fontSize: 16 }}>FECHA</Text>
-            <TouchableOpacity
-                activeOpacity={0.7}
-                style={{ flexDirection: 'row', alignItems: 'center' }}
-                onPress={() => setVisible(true)}
-            >
-                <Icon name='calendar-outline' size={25} style={css.icon} />
-                <TextInput
-                    editable={false}
-                    defaultValue={dtPicker}
-                    selectionColor='#A6ACAF'
-                    style={{ ...inputStyle.input, flex: 1, paddingLeft: 45 }}
-                />
-            </TouchableOpacity>
+        <View>
+            <View style={{ marginTop: 15 }}>
+                <Text style={{ fontSize: 16 }}>FECHA</Text>
+                <TouchableOpacity
+                    activeOpacity={0.7}
+                    style={{ flexDirection: 'row', alignItems: 'center' }}
+                    onPress={() => setVisible(true)}
+                >
+                    <Icon name='calendar-outline' size={25} style={css.icon} />
+                    <TextInput
+                        editable={false}
+                        defaultValue={dtPicker}
+                        selectionColor='#A6ACAF'
+                        style={{ ...inputStyle.input, flex: 1, paddingLeft: 45 }}
+                    />
+                </TouchableOpacity>
+            </View>
 
             {visible &&
                 <DateTimePickerModal
@@ -52,10 +55,40 @@ const AP_Picker = (props: Props): JSX.Element => {
                     mode="date"
                     onConfirm={(dt) => handleDate(dt)}
                     onCancel={() => setVisible(false)}
-                // maximumDate={new Date()}
                 />
             }
         </View>
+
+        // <View style={{ marginTop: 15 }}>
+        //     <Text style={{ fontSize: 16 }}>FECHA</Text>
+        //     <TouchableOpacity
+        //         activeOpacity={0.7}
+        //         style={{ flexDirection: 'row', alignItems: 'center' }}
+        //         onPress={() => {
+        //             setVisible(true);
+        //         }}
+        //     >
+        //         <Icon name='calendar-outline' size={25} style={css.icon} />
+        //         <TextInput
+        //             editable={false}
+        //             defaultValue={dtPicker}
+        //             selectionColor='#A6ACAF'
+        //             style={{ ...inputStyle.input, flex: 1, paddingLeft: 45 }}
+        //         />
+        //     </TouchableOpacity>
+
+        //     {visible &&
+        //         <View>
+        //             <DateTimePickerModal
+        //                 isVisible={true}
+        //                 mode="date"
+        //                 onConfirm={(dt) => handleDate(dt)}
+        //                 onCancel={() => setVisible(false)}
+        //             // maximumDate={new Date()}
+        //             />
+        //         </View>
+        //     }
+        // </View>
     )
 }
 

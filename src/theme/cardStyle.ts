@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native"
-import { color } from "./color"
+import { StyleSheet } from 'react-native'
+import { color } from './color'
 
 const round = {
     borderTopLeftRadius: 20,
@@ -13,16 +13,31 @@ const card = {
     borderRadius: 4,
     borderWidth: 0.4,
     borderColor: color.border,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     elevation: 1
 }
 
 export const cardStyle = StyleSheet.create({
     white: { ...card },
+    left_danger: {
+        marginTop: 15,
+        marginHorizontal: 10,
+        padding: 15,
+        borderRadius: 4,
+        borderTopWidth: 0.3,
+        borderTopColor: color.border,
+        borderRightWidth: 0.3,
+        borderRightColor: color.border,
+        borderBottomWidth: 0.3,
+        borderBottomColor: color.border,
+        borderLeftWidth: 8,
+        borderLeftColor: color.danger,
+        backgroundColor: color.white,
+        elevation: 1
+    },
     list: {
-        paddingVertical: 8,
-        paddingHorizontal: 20,
-        backgroundColor: "white"
+        padding: 10,
+        backgroundColor: 'white'
     },
     section: {
         marginTop: 15,

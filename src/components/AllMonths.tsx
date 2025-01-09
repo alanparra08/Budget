@@ -2,13 +2,12 @@ import React, { useContext } from "react"
 import { View, Text, ScrollView, SafeAreaView, Dimensions } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import currencyFormatter from "currency-formatter"
-import { color, textStyle, cardStyle, flexStyle } from "../theme/appStyle"
+import { color, cardStyle, flexStyle } from "../theme/appStyle"
 import { MONTHS } from "../util"
 import { useTempData } from "../hooks/useTempData"
 import { myExpenses } from "../util/myExpenses"
 import { BudgetContext } from "../context/BudgetContext"
 import { AP_IconButton } from "./AP_Buttons"
-
 
 interface IMonthGraphic {
     monthName: string;
@@ -40,11 +39,25 @@ const AllMonths = ({ year }: any): JSX.Element => {
         }
 
         return (
+            // <View style={{flexDirection: 'row', alignItems: 'center' }}>
+            //     <Text style={{marginLeft: 10}}>good</Text>
+            //     <View style={{...monthStyle, width: Dimensions.get('screen').width * .85}}>
+            //         <View style={flexStyle.row_between}>
+            //             <View style={{ flexDirection: "column" }}>
+            //                 <Text style={{ fontSize: 17, color: color.secondary, fontWeight: "300" }}>{monthName}</Text>
+            //                 <Text style={{ fontSize: 20 }}>
+            //                     {currencyFormatter.format(sumAmount, { code: "USD" })}
+            //                 </Text>
+            //             </View>
+            //             <AP_IconButton icon="chevron-forward-outline" size={23} iconColor={color.inputBorder} event={() => openMonthDetails(monthNumber)} />
+            //         </View>
+            //     </View>
+            // </View>
             <View {...monthStyle}>
                 <View style={flexStyle.row_between}>
                     <View style={{ flexDirection: "column" }}>
-                        <Text style={{ fontSize: 16, color: color.secondary, fontWeight: "300" }}>{monthName}</Text>
-                        <Text style={{ fontSize: 17 }}>
+                        <Text style={{ fontSize: 17, color: color.secondary, fontWeight: "300" }}>{monthName}</Text>
+                        <Text style={{ fontSize: 20 }}>
                             {currencyFormatter.format(sumAmount, { code: "USD" })}
                         </Text>
                     </View>

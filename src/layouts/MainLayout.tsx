@@ -1,7 +1,7 @@
 import React from 'react'
 import { SafeAreaView, View, Text, StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
-import { textStyle, flexStyle} from "../theme/appStyle"
+import { textStyle, flexStyle, color} from "../theme/appStyle"
 import { AP_IconButton } from '../components/AP_Buttons';
 
 interface LayoutProps {
@@ -41,7 +41,7 @@ const css = StyleSheet.create({
     },
     title: {
         ...textStyle.title,
-        color: "black",
+        color: 'black',
         marginLeft: 20
     }
 })

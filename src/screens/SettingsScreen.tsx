@@ -9,7 +9,7 @@ import { MainLayout } from '../layouts/MainLayout'
 import CustomAlert from '../components/CustomAlert'
 import OptionButtons from '../components/OptionButtons'
 import AP_RadioButton from '../components/AP_RadioButton'
-import AP_input from '../components/AP_input'
+import AP_Input from '../components/AP_Input'
 
 const SettingsScreen = (props: any) => {
     const router = useNavigation<any>()
@@ -53,13 +53,13 @@ const SettingsScreen = (props: any) => {
         <MainLayout title='Configuraciones'>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ ...cardStyle.white, paddingTop: 12 }}>
-                    <AP_input
+                    <AP_Input
                         focus
                         label='Mi usuario'
                         valueText={data.user}
                         change={value => handleData('user', value)}
                     />
-                    <AP_input
+                    <AP_Input
                         label='Presupuesto Mes'
                         valueText={data.budget}
                         length={6}

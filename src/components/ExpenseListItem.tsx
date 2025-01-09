@@ -1,5 +1,5 @@
 import React from "react"
-import { View, Text, StyleSheet, Modal } from "react-native"
+import { View, Text, StyleSheet } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import currencyFormatter from "currency-formatter"
 import { IRecord } from "../interfaces/interfacesIndex"
@@ -8,30 +8,40 @@ import { useExpense } from "../hooks/useExpense"
 import {color, badge, flexStyle, cardStyle} from "../theme/appStyle"
 import { AP_IconButton } from "./AP_Buttons"
 
-interface Props {
-    item: IRecord;
-    edit?: boolean;
+// interface Props {
+//     item: IRecord;
+//     edit?: boolean;
+// }
+
+type Props = {
+    item: IRecord,
+    edit?: boolean
 }
 
 const ExpenseListItem = ({ item, edit = false }: Props): JSX.Element => {
     const router = useNavigation<any>()
     const { remove } = useExpense(null)
+    let itemStyle = {}
 
     const onEditExpense = (expense: IRecord) => router.navigate("AddRecordScreen", { editExpense: expense })
 
-    let itemStyle = {}
     if (edit) {
         itemStyle = {
-            ...cardStyle.green,
+            // ...cardStyle.green,
+            // ...flexStyle.row_between,
+            // marginTop: 0,
+            // marginBottom: 8,
+            // padding: 12
+
             ...flexStyle.row_between,
-            marginTop: 0,
-            marginBottom: 8,
-            padding: 12
+            ...cardStyle.left_danger,
+            marginBottom: 5,
+            marginTop: 0
         }
     } else {
         itemStyle = {
             ...flexStyle.row_between,
-            padding: 8
+            padding: 8,
         }
     }
 
@@ -43,13 +53,13 @@ const ExpenseListItem = ({ item, edit = false }: Props): JSX.Element => {
         }}>
             <AP_IconButton
                 icon='pencil-outline'
-                size={20}
+                size={22}
                 iconColor={color.primary}
                 event={() => onEditExpense(item)}
             />
             <AP_IconButton
                 icon='trash-outline'
-                size={20}
+                size={22}
                 iconColor={color.dangerLight}
                 event={() => remove(item.id)}
             />
@@ -59,7 +69,7 @@ const ExpenseListItem = ({ item, edit = false }: Props): JSX.Element => {
     return (
         <View key={item.id} {...itemStyle}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-                {edit && <EditView />}
+                <EditView />
                 <View>
                     <Text style={{
                         ...itemCSS.description,
@@ -85,8 +95,7 @@ const ExpenseListItem = ({ item, edit = false }: Props): JSX.Element => {
 const itemCSS = StyleSheet.create({
     description: {
         fontSize: 16,
-        maxWidth: 190,
-        color: "#356c44",
+        maxWidth: 190
     },
     total: {
         ...badge.skin,

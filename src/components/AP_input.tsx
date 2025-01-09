@@ -14,7 +14,7 @@ interface Props {
     change: (text: any) => void;
 }
 
-const AP_input = (props: Props) => {
+const AP_Input = (props: Props) => {
     const {
         label, holder, valueText, inputType = 'default', focus = false, length = 50, icon = '', change
     } = props
@@ -76,4 +76,4 @@ const css = StyleSheet.create({
     }
 })
 
-export default AP_input
+export default AP_Input

@@ -10,18 +10,19 @@ import ExpenseIndicator from '../components/ExpenseIndicator'
 import ErrorMessage from '../components/ErrorMessage'
 import ExpenseCategoryList from '../components/ExpenseCategoryList'
 import AP_Modal from '../components/AP_Modal'
+import {DisplayUser} from '../components/DisplayUser'
 import ExpenseList from '../components/ExpenseList'
 import ButtonGroup, { ButtonGroupProps } from '../components/ButtonGroup'
 import { TitleAndLink } from '../components/AP_Titles'
 import Card from '../components/Card'
+import { AP_CircleButton } from '../components/AP_Buttons'
 
-import DisplayUser from '../components/DisplayUser'
 
 const HomeScreen = () => {
   const { setSettings } = useConfig()
-  const { state: settingState } = useContext(SettingsContext)
+  const { state: settingState } = useContext(SettingsContext);
   const { displayBy, filterCategories, totalExpense, expenseList, onAddExpense } = useHome();
-  const [modal, setModal] = useState<boolean>(false)
+  const [modal, setModal] = useState<boolean>(false);
 
   const onChangeDisplay = (display: string): void => {
     const newSetting: ISettings = {
@@ -45,6 +46,7 @@ const HomeScreen = () => {
         <ExpenseCategoryList categoryData={filterCategories} />
         <TitleAndLink label='Últimos gastos' labelLink='Nuevo' event={onAddExpense} />
         <ExpenseList list={expenseList} edit />
+        {/* <AP_CircleButton icon='add-circle' event={()=> alert('aa')} /> */}
       </>
     )
   }
@@ -52,7 +54,7 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1 }} >
       <MenuTop />
-      <DisplayUser />
+      {/* <DisplayUser /> */}
       <ButtonGroup buttons={filterButtons} />
       <ExpenseIndicator />
       <HomeView />
@@ -60,7 +62,7 @@ const HomeScreen = () => {
       <AP_Modal
         children={(
           <Card closeModal={() => setModal(false)}>
-            <ExpenseList list={expenseList} edit mt={0} />
+            <ExpenseList list={expenseList} mt={0} />
           </Card>
         )}
         modalVisible={modal}

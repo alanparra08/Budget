@@ -62,7 +62,7 @@ const css = StyleSheet.create({
         borderWidth: 0.5
     },
     buttonText: {
-        fontSize: 16,
+        fontSize: 17,
         color: color.black
     }
 })

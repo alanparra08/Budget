@@ -1,20 +1,16 @@
 import React, { useState, useEffect, useContext } from "react"
-import { View, Text, ScrollView, SafeAreaView, TouchableOpacity, StyleSheet } from "react-native"
-import { SelectList } from "react-native-dropdown-select-list"
+import { StyleSheet } from "react-native"
 import { takeDate, noRepeatingYears } from "../util/getter"
 import { myExpenses } from "../util/myExpenses"
-import { useTempData } from "../hooks/useTempData"
-import { getSumTotalCategories } from "../util"
 import { color } from "../theme/appStyle"
-import { ICategory, IExpensesCategory } from "../interfaces/interfacesIndex"
 import { BudgetContext } from "../context/BudgetContext"
 import { MainLayout } from "../layouts/MainLayout"
 import Section from "../components/Section"
 import AllMonths from "../components/AllMonths"
-
 import ErrorMessage from "../components/ErrorMessage"
-import AP_PickerList from "../components/AP_PickerList"
 import ButtonGroup, { ButtonGroupProps } from "../components/ButtonGroup"
+import { getSumTotalCategories } from "../util"
+import { IExpensesCategory } from "../interfaces/interfacesIndex"
 
 
 const GraphicScreen = () => {
@@ -26,15 +22,17 @@ const GraphicScreen = () => {
     const [year, setYear] = useState<number>(yyyy)
     const [sumAmount, setSumAmount] = useState<number>(0)
     const [filterYears, setFilterYears] = useState([])
-    const [selectedYear, setSelectedYear] = useState<number>(yyyy)
+    // const [selectedYear, setSelectedYear] = useState<number>(yyyy)
 
-    // const [filterCategories, setFilterCategories] = useState<IExpensesCategory[]>([])
+    const [filterCchchategories, setFilterCategories] = useState<IExpensesCategory[]>([])
 
-    // useEffect(() => {
-    //     const expensesYear = myExpenses.getBy.year(year, expenses)
-    //     const categoriesYears = getSumTotalCategories(categories, expensesYear)
-    //     setFilterCategories(categoriesYears)
-    // }, [year])
+    useEffect(() => {
+        // const expensesYear = myExpenses.getBy.year(year, expenses)
+        // console.log('ex', expensesYear);
+        // const categoriesYears = getSumTotalCategories(categories, expensesYear)
+        // setFilterCategories(categoriesYears)
+        const years = noRepeatingYears(expenses);
+    }, [year])
 
     useEffect(() => {
         const totalYear = myExpenses.sumBy.year(year, expenses)
@@ -51,21 +49,17 @@ const GraphicScreen = () => {
         { text: '2023', event: () => setYear(2023), active: year === 2023 },
         { text: '2024', event: () => setYear(2024), active: year === 2024 },
         { text: '2025', event: () => setYear(2025), active: year === 2025 }
-      ]
+    ]
 
     return (
         <MainLayout title='Gastos anuales'>
-            <SafeAreaView style={{ flex: 1 }}>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <Section money={sumAmount} description={title} />
+            <Section money={sumAmount} description={title} />
 
-                    <ButtonGroup buttons={filterButtons} />
+            <ButtonGroup buttons={filterButtons} />
 
-                    {sumAmount === 0 && <ErrorMessage message={`Sin registros el año ${year}`} />}
+            {sumAmount === 0 && <ErrorMessage message={`Sin registros el año ${year}`} />}
 
-                    <AllMonths year={year} />
-                </ScrollView>
-            </SafeAreaView>
+            <AllMonths year={year} />
         </MainLayout>
     )
 }
@@ -78,7 +72,7 @@ const css = StyleSheet.create({
         padding: 10,
         borderRadius: 4,
         borderWidth: 0.5,
-        
+
         borderColor: "#cdcdcd",
         backgroundColor: "#ebebeb"
     },

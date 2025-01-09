@@ -18,7 +18,7 @@ const ErrorMessage = ({ message, eClose }: Props): JSX.Element => {
                 <Icon name='alert-circle-outline' size={25} color={color.error} />
                 <Text style={css.text}>{message}</Text>
             </View>
-            {eClose && <AP_IconButton icon='close' iconColor={color.error} size={23} event={eClose} />}
+            {eClose && <AP_IconButton icon='close' iconColor={color.error}  event={eClose} />}
         </View>
     )
 }

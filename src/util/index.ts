@@ -6,10 +6,11 @@ export const MONTHS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'J
 export const CONFIG_SETTINGS_LIST: IMenuList[] = [
   { id: 'set01', name: 'Registrar gasto', icon: 'card-outline', screen: 'AddRecordScreen' },
   { id: 'set02', name: 'Categorías', icon: 'list-outline', screen: 'AddCategoryScreen' },
+  { id: 'set03', name: 'Tarjetas', icon: 'card-outline', screen: 'CardsScreen' },
   { id: 'set04', name: 'Configuraciones', icon: 'settings-outline', screen: 'SettingsScreen' },
-  { id: 'set05', name: 'Gastos por año', icon: 'stats-chart-outline', screen: 'GraphicScreen' },
-  { id: 'set06', name: 'Consultas', icon: 'search-outline', screen: 'FindScreen' },
-  { id: 'set07', name: 'Inficadores financieros', icon: 'bar-chart-sharp', screen: 'DetailExpenseScreen' }
+  { id: 'set05', name: 'Consultas por año', icon: 'stats-chart-outline', screen: 'GraphicScreen' },
+  { id: 'set06', name: 'Inficadores financieros', icon: 'bar-chart-sharp', screen: 'DetailExpenseScreen' },
+  { id: 'set07', name: 'Buscar', icon: 'search-outline', screen: 'FindScreen' }
 ]
 
 const hexCharacters = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F"]

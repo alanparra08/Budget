@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { SettingsContext } from '../context/SettingCtx/SettingsContext'
 
-const DisplayUser = () => {
+export const DisplayUser = () => {
     const { state: { user } } = useContext(SettingsContext)
 
     if (user) {
@@ -28,5 +28,3 @@ const css = StyleSheet.create({
         fontWeight: '500'
     }
 })
-
-export default DisplayUser
